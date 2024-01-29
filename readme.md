@@ -73,9 +73,19 @@ Create the destroy pipeline and run it.
 
 
 
-## Terraform Script
+## Manual Terraform Script
 
 I have also manually tested each terraform bash script.
+
+Create tf.auto.tfvars to run the terraform cli.
+
+AZURE_CLIENT_ID = "XXXXXXXXXXX-8dc68ebe4dc4"
+
+AZURE_CLIENT_SECRET = "XXXXXXXXXXXXX.a74"
+
+AZURE_SUBSCRIPTION_ID = "XXXXXXXXXXXXd97fc"
+
+AZURE_TENANT_ID = "cXXXXXXXXXXXXXXXXXXX1030d8"
 
 ### Terraform Init, Plan and Apply
 ![img.png](images/build.png)
