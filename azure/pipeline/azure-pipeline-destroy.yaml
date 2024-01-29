@@ -1,0 +1,16 @@
+name: Terraform-Destroy-Pipeline
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - template: variables.yaml
+
+stages:
+  - template: ../templates/stages/terraform-destroy-stage-template.yml
+    parameters: ${{ variables }}

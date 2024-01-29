@@ -1,0 +1,30 @@
+parameters: {}
+
+stages:
+- stage: Terraform_Apply
+  displayName: "Terraform_Apply"
+  jobs:
+    - deployment: Terraform_Apply
+      displayName: 'Terraform Apply'
+      environment: ${{ parameters['env'] }}
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: DownloadBuildArtifacts@0
+                displayName: 'Download Plan Artifact'
+                inputs:
+                  artifactName: 'drop'
+
+              - task: ExtractFiles@1
+                displayName: 'Extract Plan Artifact'
+                inputs:
+                  archiveFilePatterns: '$(System.ArtifactsDirectory)/drop/tfplan_$(Build.BuildId).tgz'
+                  destinationFolder: '$(System.DefaultWorkingDirectory)/'
+                  cleanDestinationFolder: false
+
+              - template: ../steps/terraform-setup-env-template.yml
+                parameters: ${{ parameters }}
+
+              - template: ../steps/terraform-apply-template.yml
+

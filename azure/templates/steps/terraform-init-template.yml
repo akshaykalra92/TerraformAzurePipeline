@@ -1,0 +1,13 @@
+parameters: {}
+steps:
+  - task: Bash@3
+    displayName: 'Terraform Init'
+    inputs:
+      filePath: './src/script/terraform-init.sh'
+      arguments: "$(Build.SourcesDirectory) ${{ parameters['env'] }}"
+      failOnStderr: false
+    env:
+      ARM_CLIENT_ID: $(AZURE_CLIENT_ID)
+      ARM_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+      ARM_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
+      ARM_TENANT_ID: $(AZURE_TENANT_ID)

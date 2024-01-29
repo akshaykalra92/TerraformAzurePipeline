@@ -1,0 +1,22 @@
+parameters: {}
+
+stages:
+  - stage: Terraform_Destroy
+    jobs:
+      - deployment: Terraform_Destroy
+        displayName: 'Terraform Destroy'
+        environment: ${{ parameters['env'] }}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                  fetchDepth: 1
+
+                - template: ../steps/terraform-setup-env-template.yml
+                  parameters: ${{ parameters }}
+
+                - template: ../steps/terraform-init-template.yml
+                  parameters: ${{ parameters }}
+
+                - template: ../steps/terraform-destroy-template.yml

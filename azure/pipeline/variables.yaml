@@ -1,0 +1,7 @@
+variables:
+  terraform_download_sha: "2bac080244845ebd434baf5e8557bd06d53b3c8bc01b7e496b390a56cb40ac5c"
+  terraform_version: 1.7.0
+  tf_in_automation: true
+  azure_subscription: "terraform-lab"
+  keyvault_name: "terraform-lab-key"
+  env: "dev"

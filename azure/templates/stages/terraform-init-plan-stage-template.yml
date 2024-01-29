@@ -1,0 +1,36 @@
+parameters: {}
+
+stages:
+  - stage: Terraform_Init_Plan
+    displayName: "Terraform Init & Plan"
+    jobs:
+      - job: Init_Plan
+        displayName: "Terraform Init & Plan"
+        steps:
+          - checkout: self
+            fetchDepth: 1
+
+          -  template: ../steps/terraform-setup-env-template.yml
+             parameters: ${{ parameters }}
+
+          -  template: ../steps/terraform-init-template.yml
+             parameters: ${{ parameters }}
+
+          - template: ../steps/terraform-plan-template.yml
+
+          - task: ArchiveFiles@2
+            displayName: 'Create Plan Artifact'
+            inputs:
+              rootFolderOrFile: '$(Build.SourcesDirectory)'
+              includeRootFolder: false
+              archiveType: 'tar'
+              tarCompression: 'gz'
+              archiveFile: '$(Build.ArtifactStagingDirectory)/tfplan_$(Build.BuildId).tgz'
+              replaceExistingArchive: true
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Plan Artifact'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'

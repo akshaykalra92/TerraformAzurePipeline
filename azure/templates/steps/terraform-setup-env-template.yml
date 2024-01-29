@@ -1,0 +1,25 @@
+parameters: {}
+
+steps:
+  - task: Bash@3
+    displayName: 'Download Terraform'
+    inputs:
+      filePath: './src/script/terraform-download.sh'
+
+  - task: AzureKeyVault@2
+    displayName: 'Getting Token from Vault'
+    inputs:
+      azureSubscription: ${{ parameters['azure_subscription'] }}
+      KeyVaultName: ${{ parameters['keyvault_name'] }}
+      SecretsFilter: 'servicePrincipalId,servicePrincipalKey'
+
+  - task: AzureCLI@1
+    displayName: 'Environment Setup'
+    inputs:
+      azureSubscription: ${{ parameters['azure_subscription'] }}
+      scriptLocation: 'scriptPath'
+      scriptPath: './src/script/environment-setup.sh'
+      failOnStandardError: true
+    env:
+      servicePrincipalId: $(servicePrincipalId)
+      servicePrincipalKey: $(servicePrincipalKey)
